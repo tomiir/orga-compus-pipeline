@@ -58,8 +58,6 @@
 		{"from": "ShiftJump", "out": "Out", "to": "ConcatJump", "in": "In2"},
 		{"from": "DistPC", "out": "31-0", "to": "ForkBranch", "in": "In", "start": {"x": 255, "y": 83}, "points": [{"x": 320, "y": 83}]},
 		{"from": "ConcatJump", "out": "Out", "to": "MuxJump", "in": "1"},
-		{"from": "MuxJump", "out": "Out", "to": "PC", "in": "NewPC", "points": [{"x": 600, "y": 35}, {"x": 600, "y": 10}, {"x": 30, "y": 10}, {"x": 30, "y": 265}]},
-		{"from": "Control", "out": "Jump", "to": "MuxJump", "in": "Jump", "start": {"x": 280, "y": 140}, "points": [{"x": 587, "y": 140}], "end": {"x": 587, "y": 53}},
 		{"from": "DistImm", "out": "5-0", "to": "ALUControl", "in": "func", "points": [{"x": 265, "y": 360}, {"x": 265, "y": 380}, {"x": 350, "y": 380}, {"x": 350, "y": 350}]},
 		{"from": "Control", "out": "ALUOp", "to": "ALUControl", "in": "ALUOp", "start": {"x": 280, "y": 180}, "points": [{"x": 380, "y": 180}]},
 		{"from": "RegBank", "out": "ReadData1", "to": "ALU", "in": "In1", "end": {"x": 400, "y": 248}},
@@ -82,7 +80,13 @@
 		{"from": "Control", "out": "MemToReg", "to": "MuxMem", "in": "MemToReg", "start": {"x": 280, "y": 150}, "points": [{"x": 587, "y": 150}]},
 		{"from": "DataMem", "out": "ReadData", "to": "MuxMem", "in": "1"},
 		{"from": "ForkMem", "out": "Out2", "to": "MuxMem", "in": "0", "points": [{"x": 470, "y": 352}, {"x": 570, "y": 352}, {"x": 570, "y": 281}]},
-		{"from": "MuxMem", "out": "Out", "to": "RegBank", "in": "WriteData", "end": {"x": 250, "y": 297}, "points": [{"x": 600, "y": 287}, {"x": 600, "y": 400}, {"x": 240, "y": 400}, {"x": 240, "y": 297}]}
+		{"from": "MuxMem", "out": "Out", "to": "RegBank", "in": "WriteData", "end": {"x": 250, "y": 297}, "points": [{"x": 600, "y": 287}, {"x": 600, "y": 400}, {"x": 240, "y": 400}, {"x": 240, "y": 297}]},
+		
+		{"from": "Control", "out": "Jump", "to": "MuxJumpR", "in": "Jump"},
+		{"from": "ForkMem", "out": "Out3", "to": "MuxJumpR", "in": "1", "points": [{"x": 470, "y": 352}, {"x": 570, "y": 352}, {"x": 570, "y": 177}] },
+		{"from": "MuxJump", "out": "Out", "to": "MuxJumpR", "in": "0", "points": [{"x": 598, "y": 35},{"x": 598, "y": 166}]},
+
+		{"from": "MuxJumpR", "out": "Out", "to": "PC", "in": "NewPC", "points":[{"x": 632, "y": 172},{"x": 632, "y":10 }, {"x": 30, "y": 10}, {"x": 30, "y": 265}]},
 	],
 	"reg_names": ["zero", "at", "v0", "v1", "a0", "a1", "a2", "a3", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "t8", "t9", "k0", "k1", "gp", "sp", "fp", "ra"],
 	"instructions": "default.set"
