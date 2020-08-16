@@ -23,7 +23,7 @@
 		"NotStall":   {"type": "Not", "x": 175, "y": 2, "in": "In", "out": "Out"},
 		"ForkWrite":  {"type": "Fork", "x": 190, "y": 50, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		
-		"ID/EX":      {"type": "PipelineRegister", "x": 390, "y": 110, "regs": {"ReadData1": 32, "ReadData2": 32, "NewPC": 32, "Imm": 32, "Rs": 5, "Rt": 5, "Rd": 5, "RegDst": 1, "ALUOp": 2, "ALUSrc": 1, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
+		"ID/EX":      {"type": "PipelineRegister", "x": 390, "y": 110, "regs": {"ReadData1": 32, "ReadData2": 32, "NewPC": 32, "Imm": 32, "Rs": 5, "Rt": 5, "Rd": 5, "RegDst": 1, "ALUOp": 2, "ALUSrc": 1, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1, "Jump": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
 		
 		"ForkReg":    {"type": "Fork", "x": 445, "y": 281, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"MuxFwdA":    {"type": "Multiplexer", "latency": 15, "x": 425, "y": 230, "size": 32, "sel": "ForwardA", "out": "Out", "in": ["0", "1", "2"], "desc": {"default": "Selects, in conjunction with the forwarding unit, if the value of the 1st register comes from the register bank or if it's forwarded from one of the next stages.", "pt": "Selecciona, em conjunto com a unidade de atalhos, se o valor do 1º registo vem do banco de registos ou se é encaminhado de uma das etapas seguintes."}},
@@ -41,7 +41,7 @@
 		"ForkRt2":    {"type": "Fork", "x": 408, "y": 381, "size": 5, "in": "In", "out": ["Out1", "Out2", "Out3"]},
 		"ForwardingUnit":   {"type": "ForwardingUnit", "latency": 50, "x": 470, "y": 410, "ex_mem_reg_write": "EX/MEM.RegWrite", "mem_wb_reg_write": "MEM/WB.RegWrite", "ex_mem_rd": "EX/MEM.Rd", "mem_wb_rd": "MEM/WB.Rd", "id_ex_rs": "ID/EX.Rs", "id_ex_rt": "ID/EX.Rt", "fwd_a": "ForwardA", "fwd_b": "ForwardB"},
 		
-		"EX/MEM":     {"type": "PipelineRegister", "x": 550, "y": 110, "regs": {"Result": 32, "ReadData2": 32, "Zero": 1, "RegBankDst": 5, "Target": 32, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
+		"EX/MEM":     {"type": "PipelineRegister", "x": 550, "y": 110, "regs": {"Result": 32, "ReadData2": 32, "Zero": 1, "RegBankDst": 5, "Target": 32, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1, "Jump": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
 		
 		"ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkEXR1":   {"type": "Fork", "x": 575, "y": 360, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
@@ -63,16 +63,28 @@
 		"ForkMemR1":  {"type": "Fork", "x": 416, "y": 480, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 
 		"MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 30, "y": 300, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects PC+4 / branch or the jump address as the new PC.", "pt": "Selecciona o PC+4 ou o endereço de branch como novo PC."}},
-		"ForkResult":  {"type": "Fork", "in": "In", "out": ["Out1", "Out2"], "x": 605, "y": 405, "size": 32 }
-	},
+		"ForkResult":  {"type": "Fork", "in": "In", "out": ["Out1", "Out2"], "x": 605, "y": 405, "size": 32 },
+		"ForkJumpIDEX":  {"type": "Fork", "in": "In", "out": ["Or", "EXMEM"], "x": 305, "y": 405, "size": 1 },
+		"ForkJumpEXMEM":  {"type": "Fork", "in": "In", "out": ["Or", "MuxJump"], "x": 605, "y": 345, "size": 1 }
+		},
 	"wires": [
 
 		{"from": "MuxPC", "to": "MuxJump", "out": "Out",  "in": "0"},
-		{"from": "ForkResult", "to": "MuxJump", "out": "Out2", "in": "1"},
 		{"from": "MuxJump", "out": "Out", "to": "PC", "in": "NewPC"},
 
 		{"from": "EX/MEM",  "to": "ForkResult", "out": "Result", "in": "In"},
 		{"from": "ForkResult", "to": "ForkMem", "out": "Out1", "in": "In"},
+		{"from": "ForkResult", "to": "MuxJump", "out": "Out2", "in": "1"},
+
+		{"from": "Control", "to": "ID/EX", "out": "Jump", "in": "Jump"},
+		
+		{"from": "ID/EX", "to": "ForkJumpIDEX", "out": "Jump", "in": "In"},
+		{"from": "ForkJumpIDEX", "to": "OrFlush", "out": "Or", "in": "In2"},
+		{"from": "ForkJumpIDEX", "to": "EX/MEM","out": "EXMEM", "in": "Jump"},
+
+		{"from": "EX/MEM", "to": "ForkJumpEXMEM", "out": "Jump", "in": "In"},
+		{"from": "ForkJumpEXMEM", "to": "OrFlush", "out": "Or", "in": "In2"},
+		{"from": "ForkJumpEXMEM", "to": "MuxJump","out": "MuxJump", "in": "Jump"},
 
 		{"from": "PC", "out": "PC", "to": "ForkPC", "in": "In"},
 		{"from": "ForkPC", "out": "Out1", "to": "InstMem", "in": "Address"},
