@@ -60,16 +60,27 @@
 		"MuxMem":     {"type": "Multiplexer", "latency": 15, "x": 715, "y": 270, "size": 32, "sel": "MemToReg", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects the result of the ALU or the value read from memory to write to the destination register (WriteData).", "pt": "Selecciona o resultado da ALU ou o valor lido da memória para escrever no registo de destino (WriteData)."}},
 		"ForkRegWR2": {"type": "Fork", "x": 710, "y": 125, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkDst2":   {"type": "Fork", "x": 705, "y": 440, "size": 5, "in": "In", "out": ["Out1", "Out2"]},
-		"ForkMemR1":  {"type": "Fork", "x": 416, "y": 480, "size": 32, "in": "In", "out": ["Out1", "Out2"]}
+		"ForkMemR1":  {"type": "Fork", "x": 416, "y": 480, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
+
+		"MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 5, "y": 200, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects PC+4 / branch or the jump address as the new PC.", "pt": "Selecciona o PC+4 ou o endereço de branch como novo PC."}},
+		"ForkResult":  {"type": "Fork", "in": "In", "out": ["Out1", "Out2"], "x": 416, "y": 480, "size": 32 }
 	},
 	"wires": [
+
+		{"from": "MuxPC", "to": "MuxJump", "out": "Out",  "in": "0"},
+		{"from": "ForkResult", "to": "MuxJump", "out": "Out2", "in": "1"},
+		{"from": "MuxJump", "out": "Out", "to": "PC", "in": "NewPC"},
+
+		{"from": "EX/MEM",  "to": "ForkResult", "out": "Result", "in": "In", "start": {"x": 500, "y": 200}, "end": { "x":400, "y": 300}},
+		{"from": "ForkResult", "to": "ForkMem", "out": "Out1", "in": "In", "start": { "x": 200, "y": 400}},
+
 		{"from": "PC", "out": "PC", "to": "ForkPC", "in": "In"},
 		{"from": "ForkPC", "out": "Out1", "to": "InstMem", "in": "Address"},
 		{"from": "ForkPC", "out": "Out2", "to": "PCAdder", "in": "In1", "points": [{"x": 80, "y": 169}]},
 		{"from": "Const4", "out": "Out", "to": "PCAdder", "in": "In2"},
 		{"from": "PCAdder", "out": "PC+4", "to": "ForkPCAdder", "in": "In"},
 		{"from": "ForkPCAdder", "out": "Out1", "to": "MuxPC", "in": "0", "points": [{"x": 155, "y": 150}, {"x": 10, "y": 150}, {"x": 10, "y": 259}]},
-		{"from": "MuxPC", "out": "Out", "to": "PC", "in": "NewPC"},
+
 		{"from": "ForkPCAdder", "out": "Out2", "to": "IF/ID", "in": "NewPC", "end": {"x": 180, "y": 175}},
 		{"from": "InstMem", "out": "Instruction", "to": "IF/ID", "in": "Instruction", "end": {"x": 180, "y": 265}},
 		
@@ -150,7 +161,8 @@
 		{"from": "EX/MEM", "out": "RegBankDst", "to": "ForkDst1", "in": "In", "start": {"x": 565, "y": 387}},
 		{"from": "ForkDst1", "out": "Out1", "to": "MEM/WB", "in": "RegBankDst", "end": {"x": 680, "y": 387}},
 		{"from": "ForkDst1", "out": "Out2", "to": "ForwardingUnit", "in": "EX/MEM.Rd", "points": [{"x": 570, "y": 420}]},
-		{"from": "EX/MEM", "out": "Result", "to": "ForkMem", "in": "In", "start": {"x": 565, "y": 275}},
+		{"from": "EX/MEM", "out": "Result", "to": "ForkResult", "in": "In", "start": {"x": 565, "y": 275}},
+
 		{"from": "ForkMem", "out": "Out1", "to": "DataMem", "in": "Address"},
 		{"from": "ForkMem", "out": "Out2", "to": "ForkEXR1", "in": "In"},
 		{"from": "ForkEXR1", "out": "Out1", "to": "MEM/WB", "in": "Result", "end": {"x": 680, "y": 360}},

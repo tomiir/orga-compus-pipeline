@@ -21,7 +21,7 @@
 		"beq":  {"type": "I", "args": ["reg", "reg", "offset"], "fields": {"op": 4, "rs": "#1", "rt": "#2", "imm": "#3"}, "desc": "PC += ($t1 == $t2) ? (offset * 4 + 4) : 4"},
 		"lw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 35, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "$t1 = MEM[base + $t2]"},
 		"sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"},
-		"j": 		{"type": "I", "args": ["reg", "reg"], "fields": {"op": ?, "rs": "#1", "rt": "#2", "imm": 0}, "desc": "PC = ($t1 + $t2)"}
+		"j": 		{"type": "I", "args": ["reg", "reg"], "fields": {"op": 2, "rs": "#1", "rt": "#2", "imm": 0}, "desc": "PC = ($t1 + $t2)"}
 	},
 	"pseudo": {
 		"li":   {"args": ["reg", "int"], "to": ["addi #1, $0, #2"], "desc": "$t1 = 22"},
