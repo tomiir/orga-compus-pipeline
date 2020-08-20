@@ -2,44 +2,19 @@
 ##############################
 
 # Pc debe valer 4 despues de ejecutarse jump -> no se debe ejecutar el add || en pipeline no se deben ejecutar nunca los add
-li $t1, 8
-li $t0, 16
-j $t1,$t0 
-addi $t1, $t0, 2
-subi $t0, $t0, 2
-addi $t0, $t0, 1
+li $t0, 1
+multi $t0, 4    # LO debe tener 4
+mflo $t1
+multi  $t0, 8    # t0 aun vale 1 ---> LO debe contener 8
+mflo $t1
+multi $t0, 0xFFFF    # LO debe tener 0000FFFF
+mflo $t1
+multi $t1, 2 #LO debe tener 0001FFFF
 
-# Que las branches funcionan correctamente
-start:
-  li $t0, 3
-  li $t1, 3
-  beq $t0, $t1, equal
-  add $t0, $t0, $t1
-  sub $t0, $t0, $t1
-equal:
-  addi $t0, 1
-  b start
-
-
-# Que las branches y los jumps funcionen correctamente en conjunto
-start:
-  li $t0, 3
-  li $t1, 3
-  beq $t0, $t1, equal
-  add $t0, $t0, $t1
-  sub $t0, $t0, $t1
-equal:
-  nop
-  li $t0, 0
-  j $t0, $t0
-
-start2:
-  li $t0, 8
-  li $t1, 12
-  j $t0, $t1
-  add $t0, $t0, $t1
-  sub $t0, $t0, $t1
-equal2:
-  nop
-  li $t0, 0
-  beq $t0, $t0
+## Que lwi funcione correctamente
+li $t0, 4
+sw $t0, 16     #guardo el valor 4 en la posicion 16 de la memoria
+addi $t0,$t0, 4
+addi $t2,$t1, 4
+lwi $t2, $t0, $t1, 3 # t2 <- (t0 + t1 * 3)(0)  ---> t2 debe contener 4
+addi $t2, $t2, 1  #se deberia poder sumar correctamente y t2 = 5
