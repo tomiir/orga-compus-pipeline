@@ -5,15 +5,15 @@
 li $t0, 1
 multi $t0, 4    # LO debe tener 4
 mflo $t1
-multi $t0, $t0, 8    # t0 aun vale 1 ---> LO debe contener 8
+multi  $t0, 8    # t0 aun vale 1 ---> LO debe contener 8
 mflo $t1
-multi $t0, $t0, 0xFFFF    # LO debe tener 0000FFFF
+multi $t1, 3    # LO debe tener 24
 mflo $t1
-multi $t1, 2 #LO debe tener 0001FFFF
 
 ## Que lwi funcione correctamente
-sw 4, 16     #guardo el valor 4 en la posicion 16 de la memoria
-addi $t0, 4
-addi $t1, 4
+li $t0, 8
+sw $t0, 12     #guardo el valor 4 en la posicion 16 de la memoria
+li $t0, 3
+li $t1, 3
 lwi $t2, $t0, $t1, 3 # t2 <- (t0 + t1 * 3)(0)  ---> t2 debe contener 4
-addi $t2, 1  #se deberia poder sumar correctamente y t2 = 5
+addi $t2, $t2, 1  #se deberia poder sumar correctamente y t2 = 5
