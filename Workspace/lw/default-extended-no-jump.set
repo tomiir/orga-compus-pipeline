@@ -36,7 +36,7 @@
 		"not":  {"args": ["reg", "reg"], "to": ["nor #1, #2, $0"], "desc": "$t1 = ~$t2"},
 		"mul":  {"args": ["reg", "reg", "reg"], "to": ["mult #2, #3", "mflo #1"], "desc": "$t1 = $t2 * $t3"},
 		"rem":  {"args": ["reg", "reg", "reg"], "to": ["div #2, #3", "mfhi #1"], "desc": "$t1 = $t2 % $t3"},
-		"lwi":  {"args": ["reg", "reg","reg","int"], "to": ["multi #3, #4", "mflo #3", "add #3, #3, #2", "lw #1, #3"], "desc": "$t1 = 22"}
+		"lwi":  {"args": ["reg", "reg","reg","int"], "to": ["multi #3, #4", "mflo #3", "add #3, #3, #2", "lw #1, 0(#3)"], "desc": "$t1 = 22"}
 	},
 	"control": {
 		"0": {"RegDst": 1, "RegWrite": 1, "ALUOp": 2, "ALUSrc": 0, "MemToReg": 0},
