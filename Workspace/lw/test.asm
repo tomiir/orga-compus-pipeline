@@ -11,18 +11,6 @@ multi $t0, $t0, 0xFFFF    # LO debe tener 0000FFFF
 mflo $t1
 multi $t1, 2 #LO debe tener 0001FFFF
 
-# Que las branches funcionan correctamente
-start:
-  li $t0, 3
-  li $t1, 3
-  beq $t0, $t1, equal
-  add $t0, $t0, $t1
-  sub $t0, $t0, $t1
-equal:
-  nop
-  b start
-
-
 ## Que lwi funcione correctamente
 sw 4, 16     #guardo el valor 4 en la posicion 16 de la memoria
 addi $t0, 4
