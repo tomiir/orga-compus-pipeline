@@ -53,7 +53,7 @@
 		"ForkBr1":    {"type": "Fork", "x": 555, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkBr2":    {"type": "Fork", "x": 397, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkBr3":    {"type": "Fork", "x": 185, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
-		"OrFlush":    {"type": "Or", "x": 375, "y": 50, "in1": "In1", "in2": "In2", "out": "Out"},
+		"OrFlush":    {"type": "Or", "x": 375, "y": 30, "in1": "In1", "in2": "In2", "out": "Out"},
 		
 		"MEM/WB":     {"type": "PipelineRegister", "x": 680, "y": 110, "regs": {"Result": 32, "ReadData": 32, "RegBankDst": 5, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente."}},
 		
@@ -63,11 +63,11 @@
 		"ForkMemR1":  {"type": "Fork", "x": 416, "y": 480, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 
 		"MuxJump":    {"type": "Multiplexer", "latency": 15, "x": 30, "y": 300, "size": 32, "sel": "Jump", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects PC+4 / branch or the jump address as the new PC.", "pt": "Selecciona o PC+4 ou o endereço de branch como novo PC."}},
-		"ForkResult":  {"type": "Fork", "in": "In", "out": ["Out1", "Out2"], "x": 605, "y": 405, "size": 32 },
-		"ForkJumpIDEX":  {"type": "Fork", "in": "In", "out": ["Or", "EXMEM"], "x": 305, "y": 405, "size": 1 },
-		"ForkJumpEXMEM":  {"type": "Fork", "in": "In", "out": ["Or", "MuxJump"], "x": 605, "y": 345, "size": 1 },
-		"OrJump": {"type": "Or", "x": 415, "y": 50, "in1": "IDEX", "in2": "EXMEM", "out": "Out"},
-		"OrFinal": {"type": "Or", "x": 395, "y": 70, "in1": "Flush", "in2": "InJump", "out": "Out"}
+		"ForkResult":  {"type": "Fork", "in": "In", "out": ["Out1", "Out2"], "x": 605, "y": 525, "size": 32 },
+		"ForkJumpIDEX":  {"type": "Fork", "in": "In", "out": ["Or", "EXMEM"], "x": 420, "y": 160, "size": 1 },
+		"ForkJumpEXMEM":  {"type": "Fork", "in": "In", "out": ["Or", "MuxJump"], "x": 605, "y": 505, "size": 1 },
+		"OrJump": {"type": "Or", "x": 550, "y": 10, "in1": "IDEX", "in2": "EXMEM", "out": "Out"},
+		"OrFinal": {"type": "Or", "x": 435, "y": 70, "in1": "Flush", "in2": "InJump", "out": "Out"}
 		},
 	"wires": [
 
@@ -78,9 +78,9 @@
 		{"from": "ForkResult", "to": "ForkMem", "out": "Out1", "in": "In"},
 		{"from": "ForkResult", "to": "MuxJump", "out": "Out2", "in": "1"},
 
-		{"from": "Control", "to": "ID/EX", "out": "Jump", "in": "Jump"},
+		{"from": "Control", "to": "ID/EX", "out": "Jump", "in": "Jump", "start": {"x": 290, "y": 120}, "end": {"x": 390, "y": 120} },
 		
-		{"from": "ID/EX", "to": "ForkJumpIDEX", "out": "Jump", "in": "In"},
+		{"from": "ID/EX", "to": "ForkJumpIDEX", "out": "Jump", "in": "In", "start": {"x": 420, "y": 140 }},
 		{"from": "ForkJumpIDEX", "to": "OrJump", "out": "Or", "in": "IDEX"},
 		{"from": "ForkJumpIDEX", "to": "EX/MEM","out": "EXMEM", "in": "Jump"},
 
